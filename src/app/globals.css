@@ -56,3 +56,12 @@ a {
   background: #374151;
   color: white;
 }
+
+.input {
+  border-radius: 10px;
+  border: 1px solid #4b5563;
+  padding: 12px;
+  background: #111827;
+  color: #e5e7eb;
+  width: 100%;
+}

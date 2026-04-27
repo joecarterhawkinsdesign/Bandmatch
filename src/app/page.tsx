@@ -50,7 +50,10 @@ export default async function Home() {
         </form>
       </header>
       <SwipeDeck profiles={candidates ?? []} />
-      <Link href="/matches">View my matches</Link>
+      <div style={{ display: "flex", gap: 12 }}>
+        <Link href="/matches">View my matches</Link>
+        <Link href="/profile">Edit profile</Link>
+      </div>
     </main>
   );
 }

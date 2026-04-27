@@ -33,7 +33,10 @@ export default async function MatchesPage() {
     <main className="page stack">
       <header className="card stack">
         <h1>Your Matches</h1>
-        <Link href="/">Back to swiping</Link>
+        <div style={{ display: "flex", gap: 12 }}>
+          <Link href="/">Back to swiping</Link>
+          <Link href="/profile">Edit profile</Link>
+        </div>
       </header>
       {(profiles ?? []).map((profile) => (
         <article key={profile.id} className="card stack">
