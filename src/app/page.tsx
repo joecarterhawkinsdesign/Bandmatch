@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { AuthGate } from "@/components/AuthGate";
 import { SwipeDeck } from "@/components/SwipeDeck";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
+  if (!isSupabaseConfigured()) {
+    return <AuthGate />;
+  }
+
   const supabase = await createClient();
   const {
     data: { user }

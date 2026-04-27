@@ -1,9 +1,20 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function MatchesPage() {
+  if (!isSupabaseConfigured()) {
+    return (
+      <main className="page">
+        <div className="card stack">
+          <p>Supabase is not configured yet.</p>
+          <Link href="/">Back to home</Link>
+        </div>
+      </main>
+    );
+  }
+
   const supabase = await createClient();
   const {
     data: { user }

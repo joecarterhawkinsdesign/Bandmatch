@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 async function updateProfile(formData: FormData) {
   "use server";
+  if (!isSupabaseConfigured()) {
+    redirect("/");
+  }
   const supabase = await createClient();
   const {
     data: { user }
@@ -46,6 +49,9 @@ async function updateProfile(formData: FormData) {
 }
 
 export default async function ProfilePage() {
+  if (!isSupabaseConfigured()) {
+    redirect("/");
+  }
   const supabase = await createClient();
   const {
     data: { user }

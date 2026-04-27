@@ -1,15 +1,20 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 export function AuthGate() {
-  const supabase = useMemo(() => createClient(), []);
+  const configured = isSupabaseConfigured();
+  const supabase = useMemo(() => (configured ? createClient() : null), [configured]);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<string>("");
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
+    if (!supabase) {
+      setStatus("Supabase env vars are missing. Add them in Vercel or .env.local.");
+      return;
+    }
     setStatus("Sending magic link...");
 
     const { error } = await supabase.auth.signInWithOtp({
@@ -32,6 +37,11 @@ export function AuthGate() {
       <section className="card stack">
         <h1>BandMatch</h1>
         <p>Find musicians nearby and swipe right to start a band.</p>
+        {!configured ? (
+          <p>
+            Supabase is not configured yet. Add <code>NEXT_PUBLIC_SUPABASE_URL</code> and <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
+          </p>
+        ) : null}
         <form onSubmit={onSubmit} className="stack">
           <input
             required
